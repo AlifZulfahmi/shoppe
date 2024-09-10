@@ -26,42 +26,42 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(Request $request): RedirectResponse
-{
-    // Validate incoming request data
-    $validatedData = $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255'],
-        'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-        'address' => ['nullable', 'string', 'max:255'],
-        'gender' => ['nullable', 'in:male,female'],
-        'phone_number' => ['nullable', 'string', 'regex:/^\+62\s?8\d{2,3}[-\s]?\d{3,4}[-\s]?\d{3,4}$/']
-    ]);
+    {
+        // Validate incoming request data
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'gender' => ['nullable', 'in:male,female'],
+            'phone_number' => ['nullable', 'string', 'regex:/^\+62\s?8\d{2,3}[-\s]?\d{3,4}[-\s]?\d{3,4}$/']
+        ]);
 
-    $user = $request->user();
+        $user = $request->user();
 
-    // Handle image upload
-    if ($request->hasFile('image')) {
-        // Delete old image if it exists
-        if ($user->image) {
-            Storage::delete('public/images/' . $user->image);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if it exists
+            if ($user->image) {
+                Storage::delete('public/images/' . $user->image);
+            }
+
+            // Store new image in the public/images directory
+            $path = $request->file('image')->store('public/images');
+            $validatedData['image'] = basename($path);
         }
 
-        // Store new image in the public/images directory
-        $path = $request->file('image')->store('public/images');
-        $validatedData['image'] = basename($path);
+        // Update user information
+        $user->fill($validatedData);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
-
-    // Update user information
-    $user->fill($validatedData);
-
-    if ($user->isDirty('email')) {
-        $user->email_verified_at = null;
-    }
-
-    $user->save();
-
-    return Redirect::route('profile.edit')->with('status', 'profile-updated');
-}
 
 
 

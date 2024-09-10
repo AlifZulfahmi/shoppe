@@ -81,12 +81,6 @@
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
                             <!-- Place this tag where you want the button to render. -->
-                            <li class="nav-item lh-1 me-3">
-                                <a class="github-button"
-                                    href="https://github.com/themeselection/sneat-html-admin-template-free"
-                                    data-icon="octicon-star" data-size="large" data-show-count="true"
-                                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
-                            </li>
 
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -94,9 +88,8 @@
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
                                         @if (Auth::user()->image)
-                                        <img src="{{ asset('storage/images/' . Auth::user()->image) }}"
-                                            alt="image profile" class="d-block rounded" height="100" width="100"
-                                            id="uploadedAvatar" />
+                                        <img src="{{ asset('storage/images/' . Auth::user()->image) }}" alt="#"
+                                            class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
                                         @else
                                         <!-- Jika tidak, gunakan gambar default -->
                                         <img src="/assets/img/profile.jpg" alt="image profile"
@@ -112,8 +105,8 @@
                                                     <div class="avatar avatar-online">
                                                         @if (Auth::user()->image)
                                                         <img src="{{ asset('storage/images/' . Auth::user()->image) }}"
-                                                            alt="image profile" class="d-block rounded" height="100"
-                                                            width="100" id="uploadedAvatar" />
+                                                            alt="#" class="d-block rounded" height="100" width="100"
+                                                            id="uploadedAvatar" />
                                                         @else
                                                         <!-- Jika tidak, gunakan gambar default -->
                                                         <img src="/assets/img/profile.jpg" alt="image profile"
